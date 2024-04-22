@@ -9,17 +9,11 @@ import UIKit
 import SnapKit
 import Alamofire
 
+//MARK: - MainViewController
 final class MainViewController: UIViewController {
     
     // MARK: - Private View
-    
-    private lazy var searchText: UITextField = {
-        let searchText = UITextField()
-        searchText.layer.borderWidth = 1
-        searchText.layer.cornerRadius = 5
-        searchText.backgroundColor = .lightGray
-        return searchText
-    }()
+    private let textField = TextField(placeHolder: "Введите текс")
     
     private lazy var buttonAlamofire: UIButton = {
         let buttonAlamofire = UIButton()
@@ -27,11 +21,16 @@ final class MainViewController: UIViewController {
         buttonAlamofire.layer.borderWidth = 1
         buttonAlamofire.layer.cornerRadius = 5
         buttonAlamofire.backgroundColor = .systemBlue
+        buttonAlamofire.translatesAutoresizingMaskIntoConstraints = false
         return buttonAlamofire
     }()
     
     private lazy var buttonURLSession: UIButton = {
         let buttonURLSession = UIButton()
+        buttonURLSession.setTitle("URLSession", for: .normal)
+        buttonURLSession.layer.borderWidth = 1
+        buttonURLSession.layer.cornerRadius = 5
+        buttonURLSession.backgroundColor = .systemBlue
         return buttonURLSession
     }()
     
@@ -50,35 +49,57 @@ final class MainViewController: UIViewController {
         return activityIndicator
     }()
 
-    // MARK: - System Cycle
+    // MARK: - Override Method
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setupView()
-        setupConstraints()
-    }
-    
-    private func setupView() {
         view.backgroundColor = .white
-        
-        view.addSubview(searchText)
-        view.addSubview(buttonAlamofire)
-        view.addSubview(buttonURLSession)
-        view.addSubview(textView)
-        view.addSubview(activityIndicator)
+        setupView()
     }
 }
 
-// MARK: - Extension ViewController
-extension MainViewController {
+// MARK: - Setting Views
+private extension MainViewController {
     
-    private func setupConstraints() {
+    func setupView() {
+        addSubview()
+        setupConstraints()
+    }
+}
+
+// MARK: - Setting
+private extension MainViewController {
+    func addSubview() {
+        view.addSubview(textField)
+        view.addSubview(buttonAlamofire)
+        view.addSubview(buttonURLSession)
+    }
+}
+
+// MARK: - Layout
+private extension MainViewController {
+    func setupConstraints() {
         
-        textView.snp.makeConstraints { make in
-            make.left.right.equalTo(view.safeAreaLayoutGuide).offset(16)
-            make.bottom.equalToSuperview().inset(32)
-            make.height.equalTo(textView.snp.height).offset(250)
+        // Constraints textField
+        textField.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(32)
+            make.left.equalTo(view.safeAreaLayoutGuide).offset(16)
+            make.right.equalTo(view.safeAreaLayoutGuide).offset(-16)
+        }
+        
+        // Constraints buttonAlamofire
+        buttonAlamofire.snp.makeConstraints { make in
+            make.top.equalTo(textField.snp.bottom).offset(32)
+            make.left.equalTo(view.safeAreaLayoutGuide).offset(32)
+            make.right.equalTo(view.snp.right).offset((view.frame.width / -2) - 32)
+            make.height.equalTo(buttonAlamofire.snp.height).inset(10)
+        }
+        
+        // Constraints buttonURLSession
+        buttonURLSession.snp.makeConstraints { make in
+            make.top.equalTo(textField.snp.bottom).offset(32)
+            make.right.equalTo(view.safeAreaLayoutGuide).offset(-32)
+            make.left.equalTo(view.snp.left).offset((view.frame.width / 2 ) + 32)
+            make.height.equalTo(buttonURLSession.snp.height).inset(10)
         }
     }
 }
-
