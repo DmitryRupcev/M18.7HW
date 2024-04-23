@@ -17,7 +17,7 @@ final class TextView: UITextView, UITextViewDelegate {
     //MARK: - Initializer
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: .zero, textContainer: textContainer)
-        self.setupTextView(frame: frame, textContainer: textContainer)
+        self.setupTextView()
     }
     
     required init?(coder: NSCoder) {
@@ -42,18 +42,14 @@ final class TextView: UITextView, UITextViewDelegate {
     }
     
     //MARK: - Private Methods
-    private func setupTextView(frame: CGRect, textContainer: NSTextContainer?) {
+    private func setupTextView() {
         
         text = placeHolder
-        textColor = #colorLiteral(red: 0.1393499672, green: 0.149340719, blue: 0.1577528417, alpha: 1)
+        textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         delegate = self
-        
-        self.frame = CGRect(x: 30, y: 200, width: 200, height: 200)
         
         layer.cornerRadius = 10
         layer.borderWidth = 1
         layer.borderColor = UIColor.black.cgColor
-        
-        textContainer?.maximumNumberOfLines = 30
     }
 }

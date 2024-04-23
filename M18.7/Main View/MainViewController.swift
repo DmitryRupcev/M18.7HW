@@ -14,7 +14,7 @@ final class MainViewController: UIViewController {
     
     // MARK: - Private View
     private let textField = TextField(placeHolder: "Введите текс")
-    //private let textView = UITextView()
+    private let textView = TextView()
     
     private lazy var buttonAlamofire: UIButton = {
         let buttonAlamofire = UIButton()
@@ -78,7 +78,7 @@ private extension MainViewController {
         view.addSubview(textField)
         view.addSubview(buttonAlamofire)
         view.addSubview(buttonURLSession)
-        view.addSubview(textViewResult)
+        view.addSubview(textView)
     }
 }
 
@@ -111,11 +111,11 @@ private extension MainViewController {
         }
         
         // Constraints textViewResult
-        textViewResult.snp.makeConstraints { make in
-            make.centerX.equalTo(view.snp.centerX).offset(0)
-            make.centerY.equalTo(view.snp.centerY).offset(0)
-            make.width.equalTo(textViewResult.snp.width).offset(50)
-            make.height.equalTo(textViewResult.snp.height).offset(100)
+        textView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(300)
+            make.left.equalTo(view.safeAreaLayoutGuide).offset(16)
+            make.right.equalTo(view.safeAreaLayoutGuide).offset(-16)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-50)
         }
         
         
