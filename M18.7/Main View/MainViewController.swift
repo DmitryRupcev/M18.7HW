@@ -14,6 +14,7 @@ final class MainViewController: UIViewController {
     
     // MARK: - Private View
     private let textField = TextField(placeHolder: "Введите текс")
+    //private let textView = UITextView()
     
     private lazy var buttonAlamofire: UIButton = {
         let buttonAlamofire = UIButton()
@@ -34,13 +35,17 @@ final class MainViewController: UIViewController {
         return buttonURLSession
     }()
     
-    private lazy var textView: UITextView = {
-        let textView = UITextView()
-        textView.backgroundColor = .systemGray6
-        textView.layer.borderWidth = 2
-        textView.layer.cornerRadius = 10
-        return textView
+
+    private lazy var textViewResult: UITextView = {
+        let textViewResult = UITextView()
+        textViewResult.backgroundColor = .systemGray6
+        textViewResult.layer.borderWidth = 2
+        textViewResult.layer.cornerRadius = 10
+        textViewResult.isScrollEnabled = true
+        textViewResult.textColor = .darkGray
+        return textViewResult
     }()
+
     
     private lazy var activityIndicator: UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView()
@@ -68,15 +73,18 @@ private extension MainViewController {
 
 // MARK: - Setting
 private extension MainViewController {
+    
     func addSubview() {
         view.addSubview(textField)
         view.addSubview(buttonAlamofire)
         view.addSubview(buttonURLSession)
+        view.addSubview(textViewResult)
     }
 }
 
 // MARK: - Layout
 private extension MainViewController {
+    
     func setupConstraints() {
         
         // Constraints textField
@@ -101,5 +109,15 @@ private extension MainViewController {
             make.left.equalTo(view.snp.left).offset((view.frame.width / 2 ) + 32)
             make.height.equalTo(buttonURLSession.snp.height).inset(10)
         }
+        
+        // Constraints textViewResult
+        textViewResult.snp.makeConstraints { make in
+            make.centerX.equalTo(view.snp.centerX).offset(0)
+            make.centerY.equalTo(view.snp.centerY).offset(0)
+            make.width.equalTo(textViewResult.snp.width).offset(50)
+            make.height.equalTo(textViewResult.snp.height).offset(100)
+        }
+        
+        
     }
 }
