@@ -12,11 +12,12 @@ import UIKit
 final class TextView: UITextView, UITextViewDelegate {
     
     //MARK: - Private Property
-    let placeHolder = "Результат поиска"
+    private let placeHolder = "Результат поиска"
     
     //MARK: - Initializer
     override init(frame: CGRect, textContainer: NSTextContainer?) {
-        super.init(frame: .zero, textContainer: textContainer)
+        super.init(frame: frame, textContainer: textContainer)
+        delegate = self
         self.setupTextView()
     }
     
@@ -25,15 +26,16 @@ final class TextView: UITextView, UITextViewDelegate {
     }
     
     //MARK: - Internal Methods
-    internal func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text == placeHolder && textView.textColor == .lightGray  {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        
+        if (textView.text == placeHolder && textView.textColor == .lightGray)  {
             textView.text = ""
             textView.textColor = .black
         }
         textView.becomeFirstResponder()
     }
     
-    internal func textViewDidEndEditing(_ textView: UITextView) {
+    func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text == "" {
             textView.text = placeHolder
             textView.textColor = .lightGray
@@ -45,11 +47,12 @@ final class TextView: UITextView, UITextViewDelegate {
     private func setupTextView() {
         
         text = placeHolder
-        textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        delegate = self
+        textColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         
-        layer.cornerRadius = 10
+        layer.cornerRadius = 7
         layer.borderWidth = 1
-        layer.borderColor = UIColor.black.cgColor
+        layer.borderColor = #colorLiteral(red: 0.1393499672, green: 0.149340719, blue: 0.1577528417, alpha: 1)
+        layer.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        
     }
 }

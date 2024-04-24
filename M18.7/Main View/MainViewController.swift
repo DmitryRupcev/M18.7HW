@@ -12,9 +12,22 @@ import Alamofire
 //MARK: - MainViewController
 final class MainViewController: UIViewController {
     
-    // MARK: - Private View
+    // MARK: - Private Property
     private let textField = TextField(placeHolder: "Введите текс")
-    private let textView = TextView()
+    private let placeHolder = "Результат поиска"
+    
+    //MARK: - Private View
+    private lazy var textViewResult: UITextView = {
+        let textViewResult = UITextView()
+        textViewResult.text = placeHolder
+        textViewResult.textColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        textViewResult.layer.cornerRadius = 7
+        textViewResult.layer.borderWidth = 1
+        textViewResult.layer.borderColor = #colorLiteral(red: 0.1393499672, green: 0.149340719, blue: 0.1577528417, alpha: 1)
+        textViewResult.layer.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        textViewResult.font = .boldSystemFont(ofSize: 18)
+        return textViewResult
+    }()
     
     private lazy var buttonAlamofire: UIButton = {
         let buttonAlamofire = UIButton()
@@ -35,18 +48,6 @@ final class MainViewController: UIViewController {
         return buttonURLSession
     }()
     
-
-    private lazy var textViewResult: UITextView = {
-        let textViewResult = UITextView()
-        textViewResult.backgroundColor = .systemGray6
-        textViewResult.layer.borderWidth = 2
-        textViewResult.layer.cornerRadius = 10
-        textViewResult.isScrollEnabled = true
-        textViewResult.textColor = .darkGray
-        return textViewResult
-    }()
-
-    
     private lazy var activityIndicator: UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView()
         activityIndicator.center.y = 0
@@ -57,8 +58,14 @@ final class MainViewController: UIViewController {
     // MARK: - Override Method
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.view.isUserInteractionEnabled = true
         view.backgroundColor = .white
         setupView()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
 }
 
@@ -68,6 +75,7 @@ private extension MainViewController {
     func setupView() {
         addSubview()
         setupConstraints()
+        self.textViewResult.delegate = self
     }
 }
 
@@ -78,11 +86,11 @@ private extension MainViewController {
         view.addSubview(textField)
         view.addSubview(buttonAlamofire)
         view.addSubview(buttonURLSession)
-        view.addSubview(textView)
+        view.addSubview(textViewResult)
     }
 }
 
-// MARK: - Layout
+// MARK: - Extension Layout
 private extension MainViewController {
     
     func setupConstraints() {
@@ -111,7 +119,7 @@ private extension MainViewController {
         }
         
         // Constraints textViewResult
-        textView.snp.makeConstraints { make in
+        textViewResult.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(300)
             make.left.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.right.equalTo(view.safeAreaLayoutGuide).offset(-16)
@@ -119,5 +127,31 @@ private extension MainViewController {
         }
         
         
+    }
+}
+
+// MARK: - Extension UITextViewDelegate
+extension MainViewController: UITextViewDelegate {
+    
+    //MARK: - Internal Methods
+    func textViewDidBeginEditing(_ textView: UITextView) {
+
+        textView.text = ""
+        textView.textColor = .black
+        textView.font = .boldSystemFont(ofSize: 18)
+        
+        if textView.text == placeHolder  {
+            textView.textColor = .systemGray
+        }
+        textView.becomeFirstResponder()
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        
+        if textView.text == "" {
+            textView.text = placeHolder
+            textView.textColor = #colorLiteral(red: 0.1393499672, green: 0.149340719, blue: 0.1577528417, alpha: 1)
+        }
+        textView.resignFirstResponder()
     }
 }
