@@ -13,14 +13,14 @@ import Alamofire
 final class MainViewController: UIViewController {
     
     // MARK: - Private Property
-    private let textField = TextField(placeHolder: "Введите текс")
-    private let placeHolder = "Результат поиска"
+    private let textField = TextField(placeHolder: "Введите текст")
+    private let placeHolder = "   Результат поиска"
     
     //MARK: - Private View
     private lazy var textViewResult: UITextView = {
         let textViewResult = UITextView()
         textViewResult.text = placeHolder
-        textViewResult.textColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        textViewResult.textColor = Constants.Color.textColorSystemGray
         textViewResult.layer.cornerRadius = 7
         textViewResult.layer.borderWidth = 1
         textViewResult.layer.borderColor = #colorLiteral(red: 0.1393499672, green: 0.149340719, blue: 0.1577528417, alpha: 1)
@@ -59,13 +59,8 @@ final class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.isUserInteractionEnabled = true
         view.backgroundColor = .white
         setupView()
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
     }
 }
 
@@ -120,13 +115,11 @@ private extension MainViewController {
         
         // Constraints textViewResult
         textViewResult.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(300)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(200)
             make.left.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.right.equalTo(view.safeAreaLayoutGuide).offset(-16)
             make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-50)
         }
-        
-        
     }
 }
 
@@ -134,7 +127,7 @@ private extension MainViewController {
 extension MainViewController: UITextViewDelegate {
     
     //MARK: - Internal Methods
-    func textViewDidBeginEditing(_ textView: UITextView) {
+    internal func textViewDidBeginEditing(_ textView: UITextView) {
 
         textView.text = ""
         textView.textColor = .black
@@ -146,11 +139,11 @@ extension MainViewController: UITextViewDelegate {
         textView.becomeFirstResponder()
     }
     
-    func textViewDidEndEditing(_ textView: UITextView) {
+    internal func textViewDidEndEditing(_ textView: UITextView) {
         
         if textView.text == "" {
             textView.text = placeHolder
-            textView.textColor = #colorLiteral(red: 0.1393499672, green: 0.149340719, blue: 0.1577528417, alpha: 1)
+            textView.textColor = .systemGray
         }
         textView.resignFirstResponder()
     }
