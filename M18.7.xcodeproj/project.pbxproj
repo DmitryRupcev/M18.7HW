@@ -10,6 +10,8 @@
 		10206B102BD6D19F000B35AC /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10206B0F2BD6D19F000B35AC /* TextField.swift */; };
 		10206B1B2BE7F186000B35AC /* ModelNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10206B1A2BE7F186000B35AC /* ModelNetwork.swift */; };
 		10206B1F2BE7F2E8000B35AC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10206B1E2BE7F2E8000B35AC /* Constants.swift */; };
+		10206B212BE9527C000B35AC /* AlamofireRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10206B202BE9527C000B35AC /* AlamofireRequestManager.swift */; };
+		10206B252BED5023000B35AC /* URLSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10206B242BED5023000B35AC /* URLSessionManager.swift */; };
 		102436462BCBBDCA004BB4E8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102436452BCBBDCA004BB4E8 /* AppDelegate.swift */; };
 		102436482BCBBDCA004BB4E8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102436472BCBBDCA004BB4E8 /* SceneDelegate.swift */; };
 		1024364A2BCBBDCA004BB4E8 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 102436492BCBBDCA004BB4E8 /* MainViewController.swift */; };
@@ -22,6 +24,8 @@
 		10206B0F2BD6D19F000B35AC /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		10206B1A2BE7F186000B35AC /* ModelNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelNetwork.swift; sourceTree = "<group>"; };
 		10206B1E2BE7F2E8000B35AC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		10206B202BE9527C000B35AC /* AlamofireRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireRequestManager.swift; sourceTree = "<group>"; };
+		10206B242BED5023000B35AC /* URLSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionManager.swift; sourceTree = "<group>"; };
 		102436422BCBBDCA004BB4E8 /* M18.7.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = M18.7.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		102436452BCBBDCA004BB4E8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		102436472BCBBDCA004BB4E8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -50,6 +54,8 @@
 			isa = PBXGroup;
 			children = (
 				10206B1A2BE7F186000B35AC /* ModelNetwork.swift */,
+				10206B202BE9527C000B35AC /* AlamofireRequestManager.swift */,
+				10206B242BED5023000B35AC /* URLSessionManager.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -60,6 +66,7 @@
 				102436452BCBBDCA004BB4E8 /* AppDelegate.swift */,
 				102436472BCBBDCA004BB4E8 /* SceneDelegate.swift */,
 				1024364E2BCBBDCC004BB4E8 /* Assets.xcassets */,
+				102436502BCBBDCC004BB4E8 /* LaunchScreen.storyboard */,
 			);
 			path = "System resources";
 			sourceTree = "<group>";
@@ -98,7 +105,6 @@
 				10206B1C2BE7F23E000B35AC /* System resources */,
 				10206B192BE7F15D000B35AC /* Network */,
 				102436592BCBBE2B004BB4E8 /* View Controller */,
-				102436502BCBBDCC004BB4E8 /* LaunchScreen.storyboard */,
 				102436532BCBBDCC004BB4E8 /* Info.plist */,
 			);
 			path = M18.7;
@@ -245,10 +251,12 @@
 			files = (
 				10206B1B2BE7F186000B35AC /* ModelNetwork.swift in Sources */,
 				1024364A2BCBBDCA004BB4E8 /* MainViewController.swift in Sources */,
+				10206B252BED5023000B35AC /* URLSessionManager.swift in Sources */,
 				102436462BCBBDCA004BB4E8 /* AppDelegate.swift in Sources */,
 				102436482BCBBDCA004BB4E8 /* SceneDelegate.swift in Sources */,
 				10206B102BD6D19F000B35AC /* TextField.swift in Sources */,
 				10206B1F2BE7F2E8000B35AC /* Constants.swift in Sources */,
+				10206B212BE9527C000B35AC /* AlamofireRequestManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

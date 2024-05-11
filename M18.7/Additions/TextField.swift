@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 //MARK: - TextField Custom
-final class TextField: UITextField {
+final class TextField: UITextField, UITextFieldDelegate{
     
     //MARK: - Private Property
     private let padding = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 40)
@@ -18,6 +18,7 @@ final class TextField: UITextField {
     init(placeHolder: String) {
         super.init(frame: .zero)
         setupTextField(placeHolder: placeHolder)
+        self.delegate = self
     }
     
     @available(*, unavailable)
@@ -54,5 +55,9 @@ final class TextField: UITextField {
         font = .boldSystemFont(ofSize: 18)
         
         heightAnchor.constraint(equalToConstant: 40).isActive = true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.becomeFirstResponder()
     }
 }

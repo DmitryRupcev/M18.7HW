@@ -15,8 +15,21 @@ final class MainViewController: UIViewController {
     // MARK: - Private Property
     private let textField = TextField(placeHolder: "Введите текст")
     private let placeHolder = "   Результат поиска"
+    private let alamofireRequest = AlamofireRequestManager.shared
+    private lazy var keyword = ""
     
     //MARK: - Private View
+    
+    lazy var requestTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Введите слово для поиска"
+        textField.textColor = Constants.Color.textColorDark
+        textField.font = Constants.Fonts.secondaryFont
+        textField.borderStyle = .roundedRect
+        textField.clearButtonMode = .always
+        return textField
+    }()
+    
     private lazy var textViewResult: UITextView = {
         let textViewResult = UITextView()
         textViewResult.text = placeHolder
@@ -25,7 +38,7 @@ final class MainViewController: UIViewController {
         textViewResult.layer.borderWidth = 1
         textViewResult.layer.borderColor = #colorLiteral(red: 0.1393499672, green: 0.149340719, blue: 0.1577528417, alpha: 1)
         textViewResult.layer.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        textViewResult.font = .boldSystemFont(ofSize: 18)
+        textViewResult.font = Constants.Fonts.secondaryFont
         return textViewResult
     }()
     
@@ -48,13 +61,54 @@ final class MainViewController: UIViewController {
         return buttonURLSession
     }()
     
+    /// The loading indicator
     private lazy var activityIndicator: UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView()
         activityIndicator.center.y = 0
         activityIndicator.style = .large
         return activityIndicator
     }()
-
+    
+    @objc private func onLoad(_ animation: UIButton) {
+        
+        let originalColor = animation.backgroundColor
+        animation.backgroundColor = .systemGray
+        animation.backgroundColor = .orange
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            animation.backgroundColor = originalColor
+        }
+        
+        self.getInfo()
+    }
+    
+    private func getInfo() {
+        
+        view.endEditing(true)
+        DispatchQueue.main.async { [weak self] in
+            self?.activityIndicator.startAnimating()
+        }
+        
+        if let word = requestTextField.text {
+            keyword = word.lowercased()
+        }
+        
+        alamofireRequest.searchMovies(by: keyword) { (result: Result<SearchModel, Error>) in
+            switch result {
+            case .success(let searchModel):
+                let film = searchModel.films
+                
+                DispatchQueue.main.async { [weak self] in
+                    self?.textViewResult.textColor = Constants.Color.textColorDark
+                    self?.textViewResult.text = "\(film)"
+                    self?.activityIndicator.stopAnimating()
+                }
+                
+            case .failure(let error):
+                print("Error:", error)
+            }
+        }
+    }
+        
     // MARK: - Override Method
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,7 +124,7 @@ private extension MainViewController {
     func setupView() {
         addSubview()
         setupConstraints()
-        self.textViewResult.delegate = self
+        buttonAlamofire.addTarget(self, action: #selector(onLoad), for: .touchUpInside)
     }
 }
 
@@ -78,10 +132,11 @@ private extension MainViewController {
 private extension MainViewController {
     
     func addSubview() {
-        view.addSubview(textField)
+        view.addSubview(requestTextField)
         view.addSubview(buttonAlamofire)
         view.addSubview(buttonURLSession)
         view.addSubview(textViewResult)
+        view.addSubview(activityIndicator)
     }
 }
 
@@ -91,7 +146,7 @@ private extension MainViewController {
     func setupConstraints() {
         
         // Constraints textField
-        textField.snp.makeConstraints { make in
+        requestTextField.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(32)
             make.left.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.right.equalTo(view.safeAreaLayoutGuide).offset(-16)
@@ -99,7 +154,7 @@ private extension MainViewController {
         
         // Constraints buttonAlamofire
         buttonAlamofire.snp.makeConstraints { make in
-            make.top.equalTo(textField.snp.bottom).offset(32)
+            make.top.equalTo(requestTextField.snp.bottom).offset(32)
             make.left.equalTo(view.safeAreaLayoutGuide).offset(32)
             make.right.equalTo(view.snp.right).offset((view.frame.width / -2) - 32)
             make.height.equalTo(buttonAlamofire.snp.height).inset(10)
@@ -107,7 +162,7 @@ private extension MainViewController {
         
         // Constraints buttonURLSession
         buttonURLSession.snp.makeConstraints { make in
-            make.top.equalTo(textField.snp.bottom).offset(32)
+            make.top.equalTo(requestTextField.snp.bottom).offset(32)
             make.right.equalTo(view.safeAreaLayoutGuide).offset(-32)
             make.left.equalTo(view.snp.left).offset((view.frame.width / 2 ) + 32)
             make.height.equalTo(buttonURLSession.snp.height).inset(10)
@@ -120,31 +175,10 @@ private extension MainViewController {
             make.right.equalTo(view.safeAreaLayoutGuide).offset(-16)
             make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-50)
         }
-    }
-}
-
-// MARK: - Extension UITextViewDelegate
-extension MainViewController: UITextViewDelegate {
-    
-    //MARK: - Internal Methods
-    internal func textViewDidBeginEditing(_ textView: UITextView) {
-
-        textView.text = ""
-        textView.textColor = .black
-        textView.font = .boldSystemFont(ofSize: 18)
         
-        if textView.text == placeHolder  {
-            textView.textColor = .systemGray
+        activityIndicator.snp.makeConstraints { make in
+            make.centerX.equalTo(view.snp.centerX)
+            make.centerY.equalTo(view.snp.centerY)
         }
-        textView.becomeFirstResponder()
-    }
-    
-    internal func textViewDidEndEditing(_ textView: UITextView) {
-        
-        if textView.text == "" {
-            textView.text = placeHolder
-            textView.textColor = .systemGray
-        }
-        textView.resignFirstResponder()
     }
 }
