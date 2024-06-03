@@ -7,18 +7,16 @@
 
 import Foundation
  
-struct SearchModel: Decodable {
+struct SearchModel: Codable {
     let keyword: String?
     let pagesCount: Int?
     let films: [Film]
     let searchFilmCountResult: Int?
 }
 
-struct Film: Decodable {
+struct Film: Codable {
     let filmId: Int?
     let nameRu: String?
-    let nameEn: String?
-    let type: String?
     let year: String?
     let description: String?
     let filmLength: String?
@@ -26,15 +24,4 @@ struct Film: Decodable {
     let ratingVoteCount: Int?
     let posterUrl: String?
     let posterUrlPreview: String?
-}
-
-struct FilmInfo: Decodable {
-    let nameRu: String?
-    let nameOriginal: String?
-    let posterUrl: String?
-    let ratingKinopoisk: Float?
-    let ratingImdb: Float?
-    let year: Int
-    let filmLength: Int
-    let description: String?
 }

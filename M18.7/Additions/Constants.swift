@@ -10,10 +10,6 @@ import UIKit
 
 enum Constants {
     
-    enum NetworkingError: Error {
-        case badUrl, badRequest, badResponse, invalidData
-    }
-    
     //MARK: - Color
     enum Color {
         static let textColorDark = #colorLiteral(red: 0.1393499672, green: 0.149340719, blue: 0.1577528417, alpha: 1)
@@ -31,7 +27,7 @@ enum Constants {
     //MARK: - Link
     enum Link {
         static let filmsURL = "https://kinopoiskapiunofficial.tech/api/v2.1/films/"
-        static let detailURL = "https://kinopoiskapiunofficial.tech/api/v2.2/films/"
+
         static let searchByKeywordURL = filmsURL + "search-by-keyword?keyword"
         static let topFilmsURL = filmsURL + "top?type"
         
@@ -39,11 +35,31 @@ enum Constants {
             let url = URL(string: searchByKeywordURL)
             return url
         }
-        
     }
     
     //MARK: - API Key
     enum Keys {
         static let API_Key = "7d9e9573-883c-4684-9ca5-bd6a76f118b6"
+    }
+    
+    //MARK: - Networ Error
+    enum NetworkError: Error {
+        case noData
+        case tooManyRequests
+        case decodingError
+        case badURL
+        
+        static func warningMessage(error: NetworkError) -> String {
+            switch error {
+            case .noData:
+                return "Data cannot be found at this URL"
+            case .tooManyRequests:
+                return "429 Too many request"
+            case .decodingError:
+                return "Can't decode data"
+            case .badURL:
+                return "Couldn't get the URL"
+            }
+        }
     }
 }

@@ -12,15 +12,14 @@ import Alamofire
 //MARK: - MainViewController
 final class MainViewController: UIViewController {
     
-    // MARK: - Private Property
-    private let textField = TextField(placeHolder: "Введите текст")
+// MARK: - Private Property
     private let placeHolder = "   Результат поиска"
     private let alamofireRequest = AlamofireRequestManager.shared
+    private let urlSessionManager = URLSessionManager.shared
     private lazy var keyword = ""
     
-    //MARK: - Private View
-    
-    lazy var requestTextField: UITextField = {
+//MARK: - Private View
+    private lazy var requestTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Введите слово для поиска"
         textField.textColor = Constants.Color.textColorDark
@@ -69,8 +68,52 @@ final class MainViewController: UIViewController {
         return activityIndicator
     }()
     
-    @objc private func onLoad(_ animation: UIButton) {
+//MARK: - AlamofireSessionGet Button
+    @objc private func AlamofireSessionGet(_ animation: UIButton) {
         
+        ///   Button click animation
+        let originalColor = animation.backgroundColor
+        animation.backgroundColor = .systemGray
+        animation.backgroundColor = .orange
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            animation.backgroundColor = originalColor
+        }
+
+        //
+        DispatchQueue.main.async { [weak self] in
+            self?.activityIndicator.startAnimating()
+        }
+        
+        //
+        if let word = requestTextField.text {
+            keyword = word.lowercased()
+        }
+        
+        //
+        alamofireRequest.searchMovies(by: keyword) { (result: Result<SearchModel, Error>) in
+            switch result {
+            case .success(let searchModel):
+                let film = searchModel.films
+                DispatchQueue.main.async { [weak self] in
+                    self?.textViewResult.textColor = Constants.Color.textColorDark
+                    self?.textViewResult.text = "\(String(describing: film))"
+                    self?.activityIndicator.stopAnimating()
+                }
+                
+            case .failure(let error):
+                DispatchQueue.main.async { [weak self] in
+                    self?.textViewResult.textColor = Constants.Color.textColorDark
+                    self?.textViewResult.text = "\(error)"
+                    self?.activityIndicator.stopAnimating()
+                }
+            }
+        }
+    }
+    
+//MARK: - URLSessionGet Button
+    @objc func URLSessionGet(_ animation: UIButton) {
+        
+        ///    Button click animation
         let originalColor = animation.backgroundColor
         animation.backgroundColor = .systemGray
         animation.backgroundColor = .orange
@@ -78,41 +121,38 @@ final class MainViewController: UIViewController {
             animation.backgroundColor = originalColor
         }
         
-        self.getInfo()
-    }
-    
-    private func getInfo() {
-        
-        view.endEditing(true)
+        //
         DispatchQueue.main.async { [weak self] in
             self?.activityIndicator.startAnimating()
         }
         
+        //
         if let word = requestTextField.text {
             keyword = word.lowercased()
         }
         
-        alamofireRequest.searchMovies(by: keyword) { (result: Result<SearchModel, Error>) in
+        urlSessionManager.getJson(by: keyword) { (result: Result<SearchModel, Error>) in
             switch result {
             case .success(let searchModel):
                 let film = searchModel.films
-                
                 DispatchQueue.main.async { [weak self] in
                     self?.textViewResult.textColor = Constants.Color.textColorDark
                     self?.textViewResult.text = "\(film)"
                     self?.activityIndicator.stopAnimating()
                 }
-                
             case .failure(let error):
-                print("Error:", error)
+                DispatchQueue.main.async { [weak self] in
+                    self?.textViewResult.textColor = Constants.Color.textColorDark
+                    self?.textViewResult.text = "\(error)"
+                    self?.activityIndicator.stopAnimating()
+                }
             }
         }
     }
         
-    // MARK: - Override Method
+// MARK: - Override Method
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .white
         setupView()
     }
@@ -124,7 +164,8 @@ private extension MainViewController {
     func setupView() {
         addSubview()
         setupConstraints()
-        buttonAlamofire.addTarget(self, action: #selector(onLoad), for: .touchUpInside)
+        buttonAlamofire.addTarget(self, action: #selector(AlamofireSessionGet), for: .touchUpInside)
+        buttonURLSession.addTarget(self, action: #selector(URLSessionGet), for: .touchUpInside)
     }
 }
 
@@ -176,6 +217,7 @@ private extension MainViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-50)
         }
         
+        // Constraints activityIndicator
         activityIndicator.snp.makeConstraints { make in
             make.centerX.equalTo(view.snp.centerX)
             make.centerY.equalTo(view.snp.centerY)

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		10206B102BD6D19F000B35AC /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10206B0F2BD6D19F000B35AC /* TextField.swift */; };
 		10206B1B2BE7F186000B35AC /* ModelNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10206B1A2BE7F186000B35AC /* ModelNetwork.swift */; };
 		10206B1F2BE7F2E8000B35AC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10206B1E2BE7F2E8000B35AC /* Constants.swift */; };
 		10206B212BE9527C000B35AC /* AlamofireRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10206B202BE9527C000B35AC /* AlamofireRequestManager.swift */; };
@@ -21,7 +20,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		10206B0F2BD6D19F000B35AC /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		10206B1A2BE7F186000B35AC /* ModelNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelNetwork.swift; sourceTree = "<group>"; };
 		10206B1E2BE7F2E8000B35AC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		10206B202BE9527C000B35AC /* AlamofireRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireRequestManager.swift; sourceTree = "<group>"; };
@@ -75,7 +73,6 @@
 			isa = PBXGroup;
 			children = (
 				10206B1E2BE7F2E8000B35AC /* Constants.swift */,
-				10206B0F2BD6D19F000B35AC /* TextField.swift */,
 			);
 			path = Additions;
 			sourceTree = "<group>";
@@ -254,7 +251,6 @@
 				10206B252BED5023000B35AC /* URLSessionManager.swift in Sources */,
 				102436462BCBBDCA004BB4E8 /* AppDelegate.swift in Sources */,
 				102436482BCBBDCA004BB4E8 /* SceneDelegate.swift in Sources */,
-				10206B102BD6D19F000B35AC /* TextField.swift in Sources */,
 				10206B1F2BE7F2E8000B35AC /* Constants.swift in Sources */,
 				10206B212BE9527C000B35AC /* AlamofireRequestManager.swift in Sources */,
 			);

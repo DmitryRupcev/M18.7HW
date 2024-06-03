@@ -6,37 +6,50 @@
 //
 
 import Foundation
+//import Alamofire
 
-class URLSessionManager {
+final class URLSessionManager {
     static let shared = URLSessionManager(); private init() { }
     let searchModel = SearchModel.self
     
-    func fetchData(completion: @escaping (Result<SearchModel, Error>) -> ()) {
+    private lazy var apiKey = Constants.Keys.API_Key
+    private lazy var filmsURL = Constants.Link.filmsURL
+    private lazy var searchByKeywordURL = Constants.Link.searchByKeywordURL
+    
+    func getJson(by keyword: String, completion: @escaping (Result<SearchModel, Error>) -> ()) {
+        
         //
-        guard let url = Constants.Link.createURL() else {
-            completion(.failure(Constants.NetworkingError.badUrl))
+        var components = URLComponents(string: searchByKeywordURL)
+        components?.queryItems = [URLQueryItem(name: "keyword", value: keyword)]
+        
+        //
+        guard let url = components?.url else {
+            print("Something went wrong... \nCheck your URL")
             return
         }
         
         //
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data else {
-                if let error {
-                    completion(.failure(error))
+        if components != nil {
+            //
+            var request = URLRequest(url: url)
+            request.addValue(apiKey, forHTTPHeaderField: "X-API-KEY")
+            request.httpMethod = "GET"
+            
+            //
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                if let data = data {
+                    do {
+                        let json = try JSONDecoder().decode(self.searchModel, from: data)
+                        completion(.success(json))
+                    } catch {
+                        let error = Constants.NetworkError.decodingError
+                        completion(.failure(error))
+                        print(error.localizedDescription, "\(error)")
+                    }
                 }
-                return
             }
-            
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            
-            do {
-                let userData = try decoder.decode(self.searchModel, from: data)
-                completion(.success(userData))
-            } catch {
-                completion(.failure(Constants.NetworkingError.invalidData))
-            }
-            
-        }.resume()
+            task.resume()
+        }
     }
+    
 }
